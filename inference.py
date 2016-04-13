@@ -186,9 +186,9 @@ class InferenceModule:
         "*** YOUR CODE HERE ***"
         if ghostPosition == jailPosition:
             if noisyDistance == None:
-                return 1
+                return 1.0
             else:
-                return 0      
+                return 0.0    
         if noisyDistance == None:
             if ghostPosition == jailPosition:
                 return 1.0
