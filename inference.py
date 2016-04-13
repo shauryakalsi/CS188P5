@@ -305,6 +305,13 @@ class ExactInference(InferenceModule):
         """
         "*** YOUR CODE HERE ***"
         self.beliefs.normalize()
+        pacPos = gameState.getPacmanPosition()
+        for position in self.allPositions:
+            currBelief = self.beliefs[position]
+            obsProb = self.getObservationProb(observation,pacPos,position,self.getJailPosition())
+            newBelief = currBelief*obsProb
+            self.beliefs[position] = newBelief
+        self.beliefs.normalize()
 
     def elapseTime(self, gameState):
         """
