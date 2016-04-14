@@ -488,10 +488,10 @@ class JointParticleFilter(ParticleFilter):
         weightedDistribution = DiscreteDistribution()
         for particle in self.particles:
             prob = 1.0
-            for ghostTup in particle:
-                prob *= self.getObservationProb(observation[particle.index(ghostTup)],\
-                 gameState.getPacmanPosition(),ghostTup,\
-                 self.getJailPosition(particle.index(ghostTup)))
+            for i in range(self.numGhosts):
+                prob *= self.getObservationProb(observation[i],\
+                 gameState.getPacmanPosition(),particle[i],\
+                 self.getJailPosition(i))
             weightedDistribution[particle] += prob
         weightedDistribution.normalize()
         if weightedDistribution.total() == 0:
