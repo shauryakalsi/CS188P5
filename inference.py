@@ -453,7 +453,6 @@ class JointParticleFilter(ParticleFilter):
                     count += 1
                 else:
                     break
-
     def addGhostAgent(self, agent):
         """
         Each ghost agent is registered separately and stored (in case they are
@@ -485,6 +484,21 @@ class JointParticleFilter(ParticleFilter):
         the DiscreteDistribution may be useful.
         """
         "*** YOUR CODE HERE ***"
+        import random
+        weightedDistribution = DiscreteDistribution()
+        for particle in self.particles:
+            prob = 1.0
+            for ghostTup in particle:
+                prob *= self.getObservationProb(observation[particle.index(ghostTup)],\
+                 gameState.getPacmanPosition(),ghostTup,\
+                 self.getJailPosition(particle.index(ghostTup)))
+            weightedDistribution[particle] += prob
+        weightedDistribution.normalize()
+        if weightedDistribution.total() == 0:
+            self.initializeUniformly(gameState)
+        else:
+            self.particles = [weightedDistribution.sample() \
+            for _ in range(self.numParticles)]
 
     def elapseTime(self, gameState):
         """
