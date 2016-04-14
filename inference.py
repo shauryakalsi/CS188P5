@@ -437,6 +437,22 @@ class JointParticleFilter(ParticleFilter):
         """
         self.particles = []
         "*** YOUR CODE HERE ***"
+        numParticles = self.numParticles
+        import itertools
+        import random
+        permutations = list(itertools.product(self.legalPositions, repeat=self.numGhosts))
+        # shuffle to get uniform spread
+        random.shuffle(permutations)
+        numberOfPerumutations = len(permutations)
+        count = 0
+        # for each particle, need to go through permutations
+        while count < numParticles:
+            for position in permutations:
+                if count < numParticles:
+                    self.particles.append(position)
+                    count += 1
+                else:
+                    break
 
     def addGhostAgent(self, agent):
         """
