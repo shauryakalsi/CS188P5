@@ -106,7 +106,7 @@ class DiscreteDistribution(dict):
         "*** YOUR CODE HERE ***"
         self.normalize()
         lst = []
-        for k,v in sorted(self.items()):
+        for k,v in self.items():
             if len(lst) > 0:
                 lst.append(v+lst[-1])
             else:
@@ -114,7 +114,7 @@ class DiscreteDistribution(dict):
         number = random.random()
         for i in range(len(lst)):
             if number <= lst[i]:
-                return sorted(self.keys())[i]
+                return self.keys()[i]
 
 
 class InferenceModule:
@@ -376,9 +376,11 @@ class ParticleFilter(InferenceModule):
         """
         "*** YOUR CODE HERE ***"
         weightedDistribution = DiscreteDistribution()
+        zeroCnt = 0
         for particle in self.particles:
             prob = self.getObservationProb(observation,gameState.getPacmanPosition(),particle,self.getJailPosition())
             weightedDistribution[particle] += prob #why is this += and not =?
+
         weightedDistribution.normalize()
         if weightedDistribution.total() == 0.0:
             self.initializeUniformly(gameState)
